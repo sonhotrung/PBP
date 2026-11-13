@@ -55,3 +55,4 @@ export default function BudgetAlert({ budgets }: BudgetAlertProps) {
     </div>
   );
 }
+

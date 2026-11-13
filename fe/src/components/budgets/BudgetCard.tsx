@@ -74,3 +74,4 @@ export default function BudgetCard({ budget }: BudgetCardProps) {
     </Card>
   );
 }
+

@@ -28,3 +28,4 @@ export default function TotalBalanceCard({ totalBalance }: TotalBalanceCardProps
     </Card>
   );
 }
+

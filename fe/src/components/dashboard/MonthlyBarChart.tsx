@@ -69,3 +69,4 @@ export default function MonthlyBarChart({ currentStats }: MonthlyBarChartProps) 
     </Card>
   );
 }
+

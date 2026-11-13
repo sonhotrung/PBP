@@ -68,3 +68,4 @@ export default function MonthlyStatsCards({ stats }: MonthlyStatsCardsProps) {
     </div>
   );
 }
+

@@ -94,3 +94,4 @@ export default function TransactionItem({ transaction, onDelete }: TransactionIt
     </div>
   );
 }
+

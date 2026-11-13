@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  name      String
+  type      String   @default("BANK")
+  balance   Float    @default(0)
+  currency  String   @default("VND")
+  color     String?  @default("#10B981")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  outgoingTransactions Transaction[] @relation("SourceWallet")
+  incomingTransactions Transaction[] @relation("DestinationWallet")
+
+  @@map("wallets")
+}
+
+model Category {
+  id        String       @id @default(uuid())
+  name      String
+  type      CategoryType
+  icon      String       @default("Tag")
+  color     String       @default("#6B7280")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@map("categories")
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  amount      Float
+  type        TransactionType
+  description String?
+  date        DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  walletId    String
+  wallet      Wallet          @relation("SourceWallet", fields: [walletId], references: [id], onDelete: Cascade)
+
+  toWalletId  String?
+  toWallet    Wallet?         @relation("DestinationWallet", fields: [toWalletId], references: [id], onDelete: SetNull)
+
+  categoryId  String?
+  category    Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([date])
+  @@index([walletId])
+  @@index([categoryId])
+  @@map("transactions")
+}
+
+model Budget {
+  id         String   @id @default(uuid())
+  amount     Float
+  month      Int
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, month, year])
+  @@map("budgets")
+}

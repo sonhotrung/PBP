@@ -46,9 +46,6 @@ export default function BudgetAlert({ budgets }: BudgetAlertProps) {
                 )}
               </div>
             </div>
-            <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/60">
-              {isExceeded ? "Cảnh báo đỏ" : "Chú ý"}
-            </span>
           </div>
         );
       })}

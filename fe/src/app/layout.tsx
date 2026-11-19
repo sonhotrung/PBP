@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/layout/Sidebar";
+import FloatingNavbar from "@/components/layout/FloatingNavbar";
 
 export const metadata: Metadata = {
-  title: "PBP Finance - Quản lý Chi tiêu Cá nhân",
-  description: "Ứng dụng quản lý chi tiêu cá nhân",
+  title: "PBP Journal - Nhật ký Tài chính Cá nhân",
+  description: "Ứng dụng theo dõi dòng tiền & quản lý chi tiêu cá nhân thông minh",
 };
 
 export default function RootLayout({
@@ -14,10 +14,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body>
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="ml-64 flex-1 p-6">
+      <body className="bg-[#FAF7F2] text-[#1C1917] antialiased selection:bg-[#DCFCE7] selection:text-[#14532D]">
+        <div className="min-h-screen flex flex-col bg-[#FAF7F2]">
+          {/* Floating Pill Island Navigation */}
+          <FloatingNavbar />
+
+          {/* Main Workspace */}
+          <main className="flex-1 pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
             {children}
           </main>
         </div>

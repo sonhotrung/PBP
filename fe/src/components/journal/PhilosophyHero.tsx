@@ -17,6 +17,7 @@ import {
   Receipt,
   Users,
   HeartHandshake,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export interface PhilosophyItem {
@@ -169,136 +170,124 @@ export default function PhilosophyHero() {
   const IconComponent = current.icon;
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-white border border-[#E8E3D9] p-6 sm:p-7 shadow-[0_4px_24px_rgba(28,25,23,0.03)] transition-all">
-      {/* Nền mờ trang trí biểu tượng Quote */}
-      <div className="absolute left-6 -bottom-6 text-[#F4F1EA] pointer-events-none select-none">
-        <Quote className="w-32 h-32 opacity-40" />
+    <div className="relative overflow-hidden rounded-3xl border border-[#E8E3D9] shadow-[0_8px_30px_rgba(28,25,23,0.08)] min-h-[340px] sm:min-h-[380px] md:min-h-[400px] flex flex-col justify-between p-6 sm:p-8 md:p-10 transition-all group">
+      {/* 1. LỚP HÌNH ẢNH NỀN TOÀN BỘ HERO (FULL BACKGROUND) */}
+      {!imgError ? (
+        <img
+          key={current.image}
+          src={current.image}
+          alt={current.title}
+          onError={() => setImgError(true)}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+        />
+      ) : (
+        /* Fallback nghệ thuật Botanical khi chưa có ảnh trong public/img */
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0D281C] via-[#143B29] to-[#1C1917]">
+          {/* Subtle luminous spots */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-[#15803D]/25 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-[#15803D]/20 blur-3xl pointer-events-none" />
+        </div>
+      )}
+
+      {/* 2. LỚP PHỦ GRADIENT SCRIM (ĐẢM BẢO CHỮ TRÊN ẢNH LUÔN SẮC NÉT & DỄ ĐỌC) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/35 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent pointer-events-none" />
+
+      {/* 3. BIỂU TƯỢNG QUOTE NGHỆ THUẬT MỜ NẰM CHÌM */}
+      <div className="absolute right-6 -bottom-8 text-white/5 pointer-events-none select-none">
+        <Quote className="w-56 h-56 sm:w-72 sm:h-72" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
-        {/* CỘT TRÁI: NỘI DUNG TRIẾT LÝ (7 COLS = ~60%) */}
-        <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-4">
-          {/* Header của Hero */}
-          <div className="flex items-center justify-between pb-3 border-b border-[#F4F1EA]">
-            <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-xl bg-[#DCFCE7] text-[#15803D] flex items-center justify-center">
-                <IconComponent className="w-4 h-4" />
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-black uppercase tracking-wider text-[#15803D]">
-                  {current.tag}
-                </span>
-                <span className="text-[11px] font-bold text-[#A8A29E]">
-                  {String(currentIndex + 1).padStart(2, "0")} / {philosophies.length}
-                </span>
-              </div>
-            </div>
-
-            {/* Nút điều khiển */}
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="p-1.5 rounded-lg text-[#78716C] hover:text-[#1C1917] hover:bg-[#F4F1EA] transition-colors"
-                title={isPlaying ? "Tạm dừng" : "Tiếp tục tự động chạy"}
-              >
-                {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-              </button>
-              <button
-                onClick={handlePrev}
-                className="p-1.5 rounded-lg text-[#78716C] hover:text-[#1C1917] hover:bg-[#F4F1EA] transition-colors"
-                title="Triết lý trước"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={handleNext}
-                className="p-1.5 rounded-lg text-[#78716C] hover:text-[#1C1917] hover:bg-[#F4F1EA] transition-colors"
-                title="Triết lý tiếp theo"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Tiêu đề & Diễn giải */}
-          <div className="py-2 min-h-[110px] flex flex-col justify-center">
-            <h3 className="text-base sm:text-xl font-black text-[#1C1917] tracking-tight leading-snug">
-              "{current.title}"
-            </h3>
-            <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed mt-2.5">
-              {current.description}
-            </p>
-          </div>
-
-          {/* Thanh chỉ báo Indicators (10 thanh) */}
-          <div className="pt-3 flex items-center justify-between gap-4 border-t border-[#F4F1EA]">
-            <div className="flex items-center gap-1.5 flex-1 max-w-sm">
-              {philosophies.map((item, idx) => {
-                const isActive = idx === currentIndex;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleSelect(idx)}
-                    className={`h-1.5 rounded-full transition-all duration-300 relative overflow-hidden ${
-                      isActive
-                        ? "w-8 bg-[#E8E3D9]"
-                        : "w-2 bg-[#E8E3D9] hover:bg-[#D5CEBF]"
-                    }`}
-                    title={`Mục ${item.id}: ${item.title}`}
-                  >
-                    {isActive && (
-                      <div
-                        className="absolute inset-0 bg-[#15803D] rounded-full transition-all duration-100 ease-linear"
-                        style={{ width: `${progress}%` }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <span className="text-[10px] font-semibold text-[#A8A29E] shrink-0 hidden sm:inline">
-              Tự động đổi sau 7s
-            </span>
-          </div>
+      {/* 4. NỘI DUNG CHỮ HIỂN THỊ TRỰC TIẾP TRÊN ẢNH (Z-10) */}
+      {/* HEADER: TAG, THỨ TỰ & NÚT ĐIỀU KHIỂN */}
+      <div className="relative z-10 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-xs font-bold text-white shadow-xs">
+            <IconComponent className="w-3.5 h-3.5 text-[#4ADE80]" />
+            <span>{current.tag}</span>
+          </span>
+          <span className="text-xs font-bold text-white/75 tracking-wider bg-black/30 backdrop-blur-md border border-white/10 px-2.5 py-1 rounded-full">
+            {String(currentIndex + 1).padStart(2, "0")} / {philosophies.length}
+          </span>
         </div>
 
-        {/* CỘT PHẢI: KHUNG HÌNH ẢNH MINH HỌA (5 COLS = ~40%) */}
-        <div className="lg:col-span-5 h-full">
-          <div className="relative w-full aspect-16/10 sm:aspect-16/9 lg:aspect-4/3 rounded-2xl overflow-hidden border border-[#E8E3D9] bg-gradient-to-br from-[#FAF7F2] via-white to-[#F4F1EA] shadow-2xs group">
-            {/* Hiển thị hình ảnh từ public/img nếu có */}
-            {!imgError ? (
-              <img
-                src={current.image}
-                alt={current.title}
-                onError={() => setImgError(true)}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            ) : (
-              /* Fallback nghệ thuật khi chưa bỏ ảnh vào: Poster minh họa Botanical Art */
-              <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center relative overflow-hidden bg-gradient-to-br from-[#F5F9F6] via-[#FAF7F2] to-[#FAF4EB]">
-                <div className="w-16 h-16 rounded-2xl bg-white border border-[#E8E3D9] text-[#15803D] flex items-center justify-center shadow-xs mb-3">
-                  <IconComponent className="w-8 h-8" />
-                </div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#15803D]">
-                  {current.tag}
-                </span>
-                <p className="text-xs font-bold text-[#1C1917] mt-1 max-w-[220px] line-clamp-2">
-                  {current.title}
-                </p>
-                <span className="text-[10px] text-[#A8A29E] mt-3 bg-white/80 border border-[#E8E3D9] px-2 py-0.5 rounded-full">
-                  Đặt ảnh: public{current.image}
-                </span>
-              </div>
-            )}
+        {/* Nút điều khiển lướt triết lý */}
+        <div className="flex items-center gap-1 bg-black/35 backdrop-blur-md border border-white/20 rounded-2xl p-1 shadow-xs">
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="p-1.5 rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-all"
+            title={isPlaying ? "Tạm dừng" : "Tiếp tục chạy tự động"}
+          >
+            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={handlePrev}
+            className="p-1.5 rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-all"
+            title="Triết lý trước"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleNext}
+            className="p-1.5 rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-all"
+            title="Triết lý tiếp theo"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
 
-            {/* Lớp phủ gradient mờ nhẹ ở đáy ảnh để tạo chiều sâu */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute bottom-2.5 left-3 text-[10px] font-bold text-white/90 drop-shadow-sm flex items-center gap-1.5 pointer-events-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80]" />
-              <span>Triết lý {current.id}</span>
-            </div>
-          </div>
+      {/* BODY: TIÊU ĐỀ & DIỄN GIẢI TRIẾT LÝ NẰM TRỰC TIẾP TRÊN NỀN ẢNH */}
+      <div className="relative z-10 my-auto py-6 sm:py-8 max-w-3xl">
+        <div className="inline-flex items-center gap-2 mb-2 text-[#4ADE80] font-bold text-xs tracking-wider uppercase">
+          <span className="w-2 h-2 rounded-full bg-[#4ADE80] animate-pulse" />
+          <span>Triết lý tài chính #{current.id}</span>
+        </div>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-snug drop-shadow-md">
+          "{current.title}"
+        </h2>
+        <p className="text-sm sm:text-base md:text-lg text-white/90 leading-relaxed mt-3 sm:mt-4 font-normal max-w-2xl drop-shadow-sm">
+          {current.description}
+        </p>
+      </div>
+
+      {/* FOOTER: THANH CHỈ BÁO PROGRESS VÀ TRẠNG THÁI */}
+      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 border-t border-white/15">
+        {/* 10 thanh chỉ báo (1 thanh cho mỗi triết lý) */}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {philosophies.map((item, idx) => {
+            const isActive = idx === currentIndex;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleSelect(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 relative overflow-hidden ${
+                  isActive
+                    ? "w-8 sm:w-12 bg-white/25"
+                    : "w-2.5 sm:w-3.5 bg-white/25 hover:bg-white/45"
+                }`}
+                title={`Mục ${item.id}: ${item.title}`}
+              >
+                {isActive && (
+                  <div
+                    className="absolute inset-0 bg-[#4ADE80] rounded-full transition-all duration-100 ease-linear shadow-[0_0_8px_#4ADE80]"
+                    style={{ width: `${progress}%` }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Thông tin phụ trợ */}
+        <div className="flex items-center gap-2 text-[11px] font-medium text-white/70">
+          {imgError && (
+            <span className="inline-flex items-center gap-1 text-[11px] bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/15 text-white/80">
+              <ImageIcon className="w-3 h-3 text-[#4ADE80]" />
+              <span>Chưa có ảnh: public{current.image}</span>
+            </span>
+          )}
+          <span className="hidden sm:inline">Tự động chuyển sau 7.5s</span>
         </div>
       </div>
     </div>

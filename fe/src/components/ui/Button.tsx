@@ -8,11 +8,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses = {
-  primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300",
-  secondary: "bg-slate-200 text-slate-700 hover:bg-slate-300 disabled:bg-slate-100",
+  primary: "bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-emerald-300 shadow-xs",
+  secondary: "bg-emerald-50 text-emerald-800 hover:bg-emerald-100 disabled:bg-slate-100",
   danger: "bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300",
-  ghost: "bg-transparent text-slate-600 hover:bg-slate-100 disabled:opacity-50",
-  outline: "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-50",
+  ghost: "bg-transparent text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-50",
+  outline: "border border-emerald-200 bg-white text-emerald-800 hover:bg-emerald-50/50 disabled:opacity-50",
 };
 
 const sizeClasses = {

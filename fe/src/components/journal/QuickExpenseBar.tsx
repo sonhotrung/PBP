@@ -53,13 +53,13 @@ export default function QuickExpenseBar({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-3 transition-all hover:border-slate-300">
+    <div className="bg-white rounded-3xl border border-emerald-100 shadow-sm p-3.5 transition-all hover:border-emerald-200">
       <form onSubmit={handleQuickSubmit} className="flex flex-col sm:flex-row items-center gap-2.5">
         <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 pl-1">
-          <span className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500">
+          <span className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
             <Plus className="w-4 h-4" />
           </span>
-          <span className="text-xs font-bold text-slate-700 whitespace-nowrap">
+          <span className="text-xs font-bold text-emerald-950 whitespace-nowrap">
             Ghi nhanh:
           </span>
         </div>
@@ -71,7 +71,7 @@ export default function QuickExpenseBar({
             placeholder="Số tiền (đ)"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full text-xs font-semibold px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full text-xs font-semibold px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
             required
           />
         </div>
@@ -83,7 +83,7 @@ export default function QuickExpenseBar({
             placeholder="Bạn vừa chi cho việc gì? (Cà phê, Ăn trưa, Đổ xăng...)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
           />
         </div>
 
@@ -108,7 +108,7 @@ export default function QuickExpenseBar({
           <button
             type="submit"
             disabled={loading || !amount}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors shadow-xs"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-bold rounded-xl transition-colors shadow-xs shadow-emerald-600/20"
           >
             <Send className="w-3.5 h-3.5" />
             <span>Lưu</span>
@@ -117,7 +117,7 @@ export default function QuickExpenseBar({
           <button
             type="button"
             onClick={onOpenFullModal}
-            className="px-2.5 py-2 text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors whitespace-nowrap"
+            className="px-2.5 py-2 text-xs font-medium text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors whitespace-nowrap"
             title="Mở form chi tiết (Thu/Chi/Chuyển khoản)"
           >
             Chi tiết...

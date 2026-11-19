@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbfbfa;
-  --foreground: #1c1917;
+  --background: #f6f9f7;
+  --foreground: #0f1f17;
+  --primary: #059669;
+  --primary-glow: #10b981;
 }
 
 body {
@@ -16,7 +18,23 @@ body {
   box-sizing: border-box;
 }
 
-/* Tùy chỉnh thanh cuộn nhẹ nhàng */
+/* Hiệu ứng chữ Neon Xanh lá cây */
+.neon-text-green {
+  color: #10b981;
+  text-shadow: 
+    0 0 4px rgba(52, 211, 153, 0.9),
+    0 0 10px rgba(16, 185, 129, 0.7),
+    0 0 20px rgba(5, 150, 105, 0.5);
+  letter-spacing: 0.05em;
+}
+
+.neon-box-green {
+  box-shadow: 
+    0 0 15px rgba(16, 185, 129, 0.25),
+    inset 0 0 10px rgba(52, 211, 153, 0.15);
+}
+
+/* Tùy chỉnh thanh cuộn nhẹ nhàng màu xanh */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -25,9 +43,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #cbd5e1;
+  background: #a7f3d0;
 }

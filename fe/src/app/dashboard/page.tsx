@@ -130,15 +130,15 @@ export default function DashboardPage() {
         {/* Thanh chọn tháng & Nút chức năng */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Month Selector Pills */}
-          <div className="flex items-center p-1 bg-white rounded-2xl border border-slate-200 shadow-2xs">
+          <div className="flex items-center p-1 bg-white rounded-2xl border border-emerald-100 shadow-2xs">
             {[10, 11, 12].map((m) => (
               <button
                 key={m}
                 onClick={() => setSelectedMonth(m)}
                 className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all ${
                   selectedMonth === m
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-emerald-700 text-white shadow-xs shadow-emerald-700/25"
+                    : "text-slate-500 hover:text-emerald-800"
                 }`}
               >
                 Tháng {m}
@@ -148,7 +148,7 @@ export default function DashboardPage() {
 
           <button
             onClick={loadData}
-            className="p-2 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-50 shadow-2xs transition-colors"
+            className="p-2 rounded-xl bg-white border border-emerald-100 text-slate-500 hover:text-emerald-800 hover:bg-emerald-50/50 shadow-2xs transition-colors"
             title="Làm mới"
           >
             <RefreshCw className="w-4 h-4" />
@@ -156,7 +156,7 @@ export default function DashboardPage() {
 
           <button
             onClick={() => api.exportCSV(selectedMonth, selectedYear)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-2xs transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-emerald-100 text-slate-700 hover:bg-emerald-50/50 hover:text-emerald-800 text-xs font-semibold shadow-2xs transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Xuất CSV</span>
@@ -164,9 +164,9 @@ export default function DashboardPage() {
 
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs shadow-emerald-600/25 transition-colors"
           >
-            <PlusCircle className="w-4 h-4 text-amber-400" />
+            <PlusCircle className="w-4 h-4 text-emerald-200" />
             <span>Thêm mục</span>
           </button>
         </div>

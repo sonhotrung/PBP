@@ -15,7 +15,7 @@ export default function WalletPockets({
   onOpenTransfer,
 }: WalletPocketsProps) {
   return (
-    <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-2xs space-y-4">
+    <div className="bg-white rounded-3xl p-5 border border-emerald-100/90 shadow-2xs space-y-4">
       <div className="flex items-center justify-between pb-1">
         <div>
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -28,10 +28,10 @@ export default function WalletPockets({
 
         <button
           onClick={onOpenTransfer}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors border border-emerald-200/50 shadow-2xs"
           title="Chuyển tiền qua lại giữa các ví"
         >
-          <ArrowRightLeft className="w-3.5 h-3.5 text-blue-600" />
+          <ArrowRightLeft className="w-3.5 h-3.5 text-emerald-600" />
           <span>Chuyển ví</span>
         </button>
       </div>

@@ -18,14 +18,14 @@ export default function DailyInsightCard({
   const warningBudgets = budgetStatus.filter((b) => b.status === "WARNING" || b.status === "DANGER");
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-rose-500/10 border border-amber-200/60 p-5 shadow-sm">
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500/15 via-teal-500/5 to-emerald-500/10 border border-emerald-200/80 p-5 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-amber-500/20 text-amber-700">
+            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-700">
               <Sparkles className="h-3.5 w-3.5" />
             </span>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-800/80">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
               Nhật ký dòng tiền hôm nay
             </span>
           </div>
@@ -47,7 +47,7 @@ export default function DailyInsightCard({
             {forecast ? (
               <>
                 Tốc độ chi tiêu trung bình tháng này là{" "}
-                <strong>{formatCurrency(forecast.avgPerDay)}/ngày</strong>. Còn{" "}
+                <strong className="text-emerald-800">{formatCurrency(forecast.avgPerDay)}/ngày</strong>. Còn{" "}
                 <strong>{forecast.daysRemaining} ngày</strong> nữa sẽ kết thúc tháng.
                 {exceededBudgets.length > 0 && (
                   <span className="block mt-1 text-rose-600 font-semibold flex items-center gap-1">
@@ -63,11 +63,11 @@ export default function DailyInsightCard({
         </div>
 
         {forecast && (
-          <div className="hidden sm:flex flex-col items-end shrink-0 bg-white/80 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-amber-100 shadow-xs">
+          <div className="hidden sm:flex flex-col items-end shrink-0 bg-white/90 backdrop-blur-sm px-4 py-2.5 rounded-2xl border border-emerald-100 shadow-2xs">
             <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-              <TrendingUp className="w-3 h-3 text-amber-500" /> Dự kiến cuối tháng
+              <TrendingUp className="w-3 h-3 text-emerald-500" /> Dự kiến cuối tháng
             </span>
-            <span className="text-base font-extrabold text-slate-900 mt-0.5">
+            <span className="text-base font-extrabold text-emerald-900 mt-0.5">
               {formatCurrency(forecast.projectedTotal)}
             </span>
           </div>

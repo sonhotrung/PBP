@@ -7,10 +7,9 @@ import BudgetCard from "@/components/budgets/BudgetCard";
 import BudgetAlert from "@/components/budgets/BudgetAlert";
 import BudgetForm from "@/components/budgets/BudgetForm";
 import ForecastCard from "@/components/dashboard/ForecastCard";
-import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import Spinner from "@/components/ui/Spinner";
-import { PlusCircle, Target } from "lucide-react";
+import { PlusCircle, Target, Sparkles, RefreshCw } from "lucide-react";
 
 export default function BudgetsPage() {
   const [loading, setLoading] = useState(true);
@@ -43,58 +42,79 @@ export default function BudgetsPage() {
   }, [month, year]);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12">
+    <div className="max-w-5xl mx-auto space-y-6 pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Quản lý Ngân sách
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+            <Target className="w-4 h-4 text-slate-500" />
+            <span>Kế hoạch chi tiêu</span>
+          </div>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            Mục tiêu ngân sách
           </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Thiết lập hạn mức chi tiêu cho từng danh mục để kiểm soát tài chính
-          </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <Button
-            size="sm"
+        <div className="flex items-center gap-2">
+          {/* Month Selector */}
+          <div className="flex items-center p-1 bg-white rounded-2xl border border-slate-200 shadow-2xs">
+            {[10, 11, 12].map((m) => (
+              <button
+                key={m}
+                onClick={() => setMonth(m)}
+                className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all ${
+                  month === m
+                    ? "bg-slate-900 text-white shadow-xs"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                Tháng {m}
+              </button>
+            ))}
+          </div>
+
+          <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-1.5 font-semibold"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition-colors"
           >
-            <PlusCircle className="w-4 h-4" /> Thiết lập ngân sách
-          </Button>
+            <PlusCircle className="w-4 h-4 text-amber-400" />
+            <span>Thiết lập hạn mức</span>
+          </button>
         </div>
       </div>
 
       {/* Cảnh báo nếu có danh mục vượt ngưỡng */}
       {budgets.length > 0 && <BudgetAlert budgets={budgets} />}
 
-      {/* Dự báo chi tiêu */}
+      {/* Thẻ dự báo tốc độ chi tiêu */}
       {forecast && <ForecastCard forecast={forecast} />}
 
       {/* Danh sách thẻ ngân sách */}
       <div className="space-y-4">
-        <h3 className="text-base font-semibold text-slate-800 flex items-center gap-2">
-          <Target className="w-4 h-4 text-blue-600" /> Ngân sách tháng {month}/{year}
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+            <span>Hạn mức danh mục ({budgets.length})</span>
+          </h3>
+          <span className="text-xs text-slate-400 font-medium">
+            Tự động đổi màu khi chạm ngưỡng 70% và 90%
+          </span>
+        </div>
 
         {loading ? (
           <div className="py-24">
             <Spinner className="w-8 h-8" />
           </div>
         ) : budgets.length === 0 ? (
-          <div className="p-8 text-center bg-white rounded-2xl border border-slate-200">
-            <p className="text-sm text-slate-500">
-              Chưa có ngân sách nào được thiết lập cho tháng {month}/{year}.
+          <div className="p-10 text-center bg-white rounded-3xl border border-slate-200 shadow-2xs">
+            <p className="text-sm text-slate-500 font-medium">
+              Chưa có hạn mức nào cho tháng {month}/{year}.
             </p>
-            <Button
-              size="sm"
-              variant="outline"
+            <button
               onClick={() => setIsModalOpen(true)}
-              className="mt-3"
+              className="mt-3 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold"
             >
               Thêm ngân sách đầu tiên
-            </Button>
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -124,4 +144,3 @@ export default function BudgetsPage() {
     </div>
   );
 }
-

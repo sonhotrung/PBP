@@ -38,16 +38,21 @@ export default function TransactionForm({
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       type: "EXPENSE",
       amount: 50000,
-      date: new Date().toISOString().split("T")[0],
+      date: "",
       walletId: wallets[0]?.id || "",
     },
   });
+
+  React.useEffect(() => {
+    setValue("date", new Date().toISOString().split("T")[0]);
+  }, [setValue]);
 
   const selectedType = watch("type");
 

@@ -9,7 +9,6 @@ import {
   Target,
   WalletCards,
   Sparkles,
-  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -39,25 +38,25 @@ export default function FloatingNavbar() {
 
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none">
-      <nav className="pointer-events-auto flex items-center gap-1.5 sm:gap-2.5 p-1.5 bg-white/90 backdrop-blur-xl border border-emerald-200/80 rounded-full shadow-lg shadow-emerald-950/5 neon-box-green transition-all">
-        {/* Brand Logo với chữ NEON Xanh lá cây phát quang */}
+      <nav className="pointer-events-auto flex items-center gap-1.5 sm:gap-2.5 p-1.5 bg-white/95 backdrop-blur-xl border border-[#E8E3D9] rounded-full shadow-lg shadow-stone-900/5 neon-island-border transition-all">
+        {/* Brand Logo với chữ NEON Xanh Lá Cây */}
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 pl-2 pr-3 py-1 rounded-full bg-slate-950 hover:bg-black transition-all group shrink-0 border border-emerald-900/60 shadow-xs"
+          className="flex items-center gap-2 pl-2 pr-3.5 py-1 rounded-full bg-[#0A2616] hover:bg-[#071D11] transition-all group shrink-0 border border-emerald-500/40 shadow-xs"
         >
-          <div className="w-6 h-6 rounded-full bg-emerald-950 flex items-center justify-center text-emerald-400 border border-emerald-500/40">
+          <div className="w-6 h-6 rounded-full bg-emerald-900/60 flex items-center justify-center text-[#4ADE80] border border-emerald-400/40">
             <WalletCards className="w-3.5 h-3.5" />
           </div>
-          <span className="text-xs font-black tracking-wider neon-text-green uppercase">
+          <span className="text-xs font-black tracking-wider neon-logo-text uppercase">
             PBP Journal
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse shadow-[0_0_8px_#4ADE80]" />
         </Link>
 
-        {/* Dấu phân cách dọc mảnh */}
-        <div className="h-4 w-px bg-emerald-200/60 shrink-0" />
+        {/* Dấu phân cách dọc viền be */}
+        <div className="h-4 w-px bg-[#E8E3D9] shrink-0" />
 
-        {/* Navigation Items dạng Segmented Pills theo chủ đề Xanh lá */}
+        {/* Navigation Items (Pills Be + Xanh Lá) */}
         <div className="flex items-center gap-1">
           {navItems.map((item) => {
             const isActive =
@@ -69,16 +68,16 @@ export default function FloatingNavbar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap",
+                  "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap",
                   isActive
-                    ? "bg-emerald-700 text-white shadow-xs shadow-emerald-700/20"
-                    : "text-slate-600 hover:text-emerald-800 hover:bg-emerald-50/80"
+                    ? "bg-[#15803D] text-white shadow-xs shadow-emerald-800/25"
+                    : "text-[#57534E] hover:text-[#1C1917] hover:bg-[#F4F1EA]"
                 )}
               >
                 <Icon
                   className={cn(
                     "w-3.5 h-3.5",
-                    isActive ? "text-emerald-200" : "text-emerald-600/70"
+                    isActive ? "text-emerald-100" : "text-[#78716C]"
                   )}
                 />
                 <span className="hidden md:inline">{item.fullLabel}</span>
@@ -88,13 +87,13 @@ export default function FloatingNavbar() {
           })}
         </div>
 
-        {/* Dấu phân cách dọc mảnh */}
-        <div className="h-4 w-px bg-emerald-200/60 shrink-0 hidden sm:block" />
+        {/* Dấu phân cách dọc viền be */}
+        <div className="h-4 w-px bg-[#E8E3D9] shrink-0 hidden sm:block" />
 
-        {/* Mini Status Tag chủ đề Xanh lá */}
+        {/* Mini Be Tag */}
         <div className="hidden sm:flex items-center gap-1.5 pr-2.5 pl-1 py-1">
-          <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100/70 border border-emerald-200/60 px-2 py-0.5 rounded-full">
-            <Zap className="w-3 h-3 text-emerald-600" />
+          <span className="flex items-center gap-1 text-[11px] font-bold text-[#15803D] bg-[#F4F1EA] border border-[#E8E3D9] px-2.5 py-0.5 rounded-full">
+            <Sparkles className="w-3 h-3 text-[#15803D]" />
             <span>2026</span>
           </span>
         </div>

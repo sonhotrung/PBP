@@ -8,11 +8,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses = {
-  primary: "bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-emerald-300 shadow-xs",
-  secondary: "bg-emerald-50 text-emerald-800 hover:bg-emerald-100 disabled:bg-slate-100",
+  primary: "bg-[#15803D] text-white hover:bg-[#166534] disabled:bg-[#86EFAC] shadow-xs shadow-emerald-800/15",
+  secondary: "bg-[#F4F1EA] text-[#44403C] hover:bg-[#E8E3D9] border border-[#E8E3D9] disabled:opacity-50",
   danger: "bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300",
-  ghost: "bg-transparent text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 disabled:opacity-50",
-  outline: "border border-emerald-200 bg-white text-emerald-800 hover:bg-emerald-50/50 disabled:opacity-50",
+  ghost: "bg-transparent text-[#57534E] hover:bg-[#F4F1EA] hover:text-[#1C1917] disabled:opacity-50",
+  outline: "border border-[#E8E3D9] bg-white text-[#44403C] hover:bg-[#FAF7F2] hover:text-[#1C1917] disabled:opacity-50 shadow-2xs",
 };
 
 const sizeClasses = {
@@ -31,7 +31,7 @@ export default function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all disabled:cursor-not-allowed",
         variantClasses[variant],
         sizeClasses[size],
         className

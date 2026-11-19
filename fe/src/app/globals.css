@@ -1,15 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f9f7;
-  --foreground: #0f1f17;
-  --primary: #059669;
-  --primary-glow: #10b981;
+  /* Bảng màu Kem + Trắng + Be + Xanh lá */
+  --bg-cream: #FAF7F2;          /* Màu kem ấm áp làm nền toàn trang */
+  --card-white: #FFFFFF;        /* Màu trắng tinh khôi cho các thẻ Card */
+  --beige-subtle: #F4F1EA;      /* Màu be nhạt cho ô input và nền phụ */
+  --beige-border: #E8E3D9;      /* Màu be cát cho các đường viền dividers */
+  --green-primary: #15803D;     /* Xanh lá cây thực vật cho Buttons & Accents */
+  --green-neon: #22C55E;        /* Xanh neon phát quang cho Logo */
+  --text-dark: #1C1917;         /* Màu chữ nâu sẫm thanh lịch */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -18,34 +22,36 @@ body {
   box-sizing: border-box;
 }
 
-/* Hiệu ứng chữ Neon Xanh lá cây */
-.neon-text-green {
-  color: #10b981;
+/* Chữ Logo NEON Xanh Lá Cây */
+.neon-logo-text {
+  color: #4ADE80;
   text-shadow: 
-    0 0 4px rgba(52, 211, 153, 0.9),
-    0 0 10px rgba(16, 185, 129, 0.7),
-    0 0 20px rgba(5, 150, 105, 0.5);
-  letter-spacing: 0.05em;
+    0 0 4px rgba(74, 222, 128, 0.9),
+    0 0 12px rgba(34, 197, 94, 0.75),
+    0 0 24px rgba(21, 128, 61, 0.5);
+  letter-spacing: 0.08em;
 }
 
-.neon-box-green {
+/* Viền phát quang nhẹ cho thanh điều hướng */
+.neon-island-border {
   box-shadow: 
-    0 0 15px rgba(16, 185, 129, 0.25),
-    inset 0 0 10px rgba(52, 211, 153, 0.15);
+    0 4px 20px -2px rgba(28, 25, 23, 0.05),
+    0 0 0 1px var(--beige-border),
+    0 0 12px rgba(34, 197, 94, 0.12);
 }
 
-/* Tùy chỉnh thanh cuộn nhẹ nhàng màu xanh */
+/* Thanh cuộn tinh tế màu be kem */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--bg-cream);
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #D8D2C6;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a7f3d0;
+  background: #B8B0A2;
 }

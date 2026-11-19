@@ -57,15 +57,15 @@ export default function BudgetsPage() {
 
         <div className="flex items-center gap-2">
           {/* Month Selector */}
-          <div className="flex items-center p-1 bg-white rounded-2xl border border-emerald-100 shadow-2xs">
+          <div className="flex items-center p-1 bg-white rounded-2xl border border-[#E8E3D9] shadow-2xs">
             {[10, 11, 12].map((m) => (
               <button
                 key={m}
                 onClick={() => setMonth(m)}
                 className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all ${
                   month === m
-                    ? "bg-emerald-700 text-white shadow-xs shadow-emerald-700/20"
-                    : "text-slate-500 hover:text-emerald-800"
+                    ? "bg-[#15803D] text-white shadow-xs"
+                    : "text-[#78716C] hover:text-[#1C1917]"
                 }`}
               >
                 Tháng {m}
@@ -75,7 +75,7 @@ export default function BudgetsPage() {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs shadow-emerald-600/25 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#15803D] hover:bg-[#166534] text-white text-xs font-bold shadow-xs shadow-emerald-800/15 transition-all"
           >
             <PlusCircle className="w-4 h-4 text-emerald-200" />
             <span>Thiết lập hạn mức</span>

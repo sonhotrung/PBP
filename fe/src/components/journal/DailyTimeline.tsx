@@ -122,26 +122,26 @@ export default function DailyTimeline({
       {groups.map((group) => (
         <div key={group.dateStr} className="relative">
           {/* Header của từng ngày (Editorial Journal Date Tag) */}
-          <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-200/80">
+          <div className="flex items-center justify-between pb-2 mb-3 border-b border-[#E8E3D9]">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-slate-900" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+              <span className="w-2 h-2 rounded-full bg-[#15803D]" />
+              <h3 className="text-xs font-black uppercase tracking-wider text-[#1C1917]">
                 {group.label}
               </h3>
-              <span className="text-[11px] text-slate-400 font-medium">
+              <span className="text-[11px] text-[#78716C] font-semibold">
                 ({group.items.length} giao dịch)
               </span>
             </div>
 
             <div className="flex items-center gap-3 text-xs font-bold">
               {group.totalExpense > 0 && (
-                <span className="text-slate-700 font-semibold">
-                  Chi: <span className="text-rose-600">-{formatCurrency(group.totalExpense)}</span>
+                <span className="text-[#57534E] font-medium">
+                  Chi: <span className="text-rose-600 font-bold">-{formatCurrency(group.totalExpense)}</span>
                 </span>
               )}
               {group.totalIncome > 0 && (
-                <span className="text-slate-700 font-semibold">
-                  Thu: <span className="text-emerald-600">+{formatCurrency(group.totalIncome)}</span>
+                <span className="text-[#57534E] font-medium">
+                  Thu: <span className="text-[#15803D] font-bold">+{formatCurrency(group.totalIncome)}</span>
                 </span>
               )}
             </div>
@@ -161,14 +161,14 @@ export default function DailyTimeline({
               return (
                 <div
                   key={tx.id}
-                  className="group flex items-center justify-between p-3.5 bg-white hover:bg-slate-50/80 rounded-2xl border border-slate-100 hover:border-slate-200 shadow-2xs transition-all"
+                  className="group flex items-center justify-between p-3.5 bg-white hover:bg-[#FAF7F2] rounded-2xl border border-[#EFECE6] hover:border-[#E0D9CD] shadow-2xs transition-all"
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-2xs"
                       style={{
-                        backgroundColor: tx.category?.color ? `${tx.category.color}18` : "#F1F5F9",
-                        color: tx.category?.color || "#475569",
+                        backgroundColor: tx.category?.color ? `${tx.category.color}18` : "#F5F2EB",
+                        color: tx.category?.color || "#57534E",
                       }}
                     >
                       {icon}
@@ -176,26 +176,26 @@ export default function DailyTimeline({
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-slate-800 truncate">
+                        <span className="text-sm font-bold text-[#1C1917] truncate">
                           {tx.description || tx.category?.name || "Giao dịch không tên"}
                         </span>
-                        <span className="text-[11px] text-slate-400 flex items-center gap-1 shrink-0">
+                        <span className="text-[11px] text-[#A8A29E] flex items-center gap-1 shrink-0">
                           <Clock className="w-3 h-3" /> {timeStr}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
+                      <div className="flex items-center gap-2 mt-0.5 text-xs text-[#78716C]">
                         {tx.category && (
-                          <span className="font-medium text-slate-600">
+                          <span className="font-semibold text-[#57534E]">
                             {tx.category.name}
                           </span>
                         )}
                         <span>•</span>
-                        <span className="px-1.5 py-0.5 rounded-md bg-slate-100 text-[10px] font-semibold text-slate-600">
+                        <span className="px-1.5 py-0.5 rounded-md bg-[#F4F1EA] text-[10px] font-bold text-[#57534E]">
                           {tx.wallet?.name || "Ví chính"}
                         </span>
                         {isTransfer && tx.toWallet && (
-                          <span className="text-[11px] text-blue-600 font-medium">
+                          <span className="text-[11px] text-[#15803D] font-bold">
                             ➔ {tx.toWallet.name}
                           </span>
                         )}
@@ -206,12 +206,12 @@ export default function DailyTimeline({
                   <div className="flex items-center gap-3 shrink-0 ml-4">
                     <div className="text-right">
                       <span
-                        className={`text-sm font-extrabold tracking-tight ${
+                        className={`text-sm font-black tracking-tight ${
                           isIncome
-                            ? "text-emerald-600"
+                            ? "text-[#15803D]"
                             : isTransfer
                             ? "text-blue-600"
-                            : "text-slate-900"
+                            : "text-[#1C1917]"
                         }`}
                       >
                         {isIncome ? "+" : isTransfer ? "⇄ " : "-"}

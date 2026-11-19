@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, ArrowRightLeft, Sparkles, Send } from "lucide-react";
+import { Plus, Send } from "lucide-react";
 import { Wallet, Category } from "@/types";
 import { api } from "@/lib/api";
 
@@ -53,37 +53,37 @@ export default function QuickExpenseBar({
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-emerald-100 shadow-sm p-3.5 transition-all hover:border-emerald-200">
+    <div className="bg-white rounded-3xl border border-[#E8E3D9] shadow-2xs p-3.5 transition-all hover:border-[#D8D2C6]">
       <form onSubmit={handleQuickSubmit} className="flex flex-col sm:flex-row items-center gap-2.5">
         <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 pl-1">
-          <span className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <span className="w-8 h-8 rounded-xl bg-[#DCFCE7] flex items-center justify-center text-[#15803D]">
             <Plus className="w-4 h-4" />
           </span>
-          <span className="text-xs font-bold text-emerald-950 whitespace-nowrap">
+          <span className="text-xs font-black text-[#1C1917] whitespace-nowrap">
             Ghi nhanh:
           </span>
         </div>
 
-        {/* Ô nhập số tiền */}
+        {/* Ô nhập số tiền (Nền Be nhạt) */}
         <div className="relative w-full sm:w-36 shrink-0">
           <input
             type="number"
             placeholder="Số tiền (đ)"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full text-xs font-semibold px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+            className="w-full text-xs font-bold px-3 py-2 rounded-xl bg-[#F7F5F0] border border-[#E8E3D9] text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#15803D]/20 focus:border-[#15803D]"
             required
           />
         </div>
 
-        {/* Ô nhập mô tả */}
+        {/* Ô nhập mô tả (Nền Be nhạt) */}
         <div className="w-full sm:flex-1">
           <input
             type="text"
-            placeholder="Bạn vừa chi cho việc gì? (Cà phê, Ăn trưa, Đổ xăng...)"
+            placeholder="Bạn vừa chi việc gì? (Cà phê, Ăn trưa, Đổ xăng...)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full text-xs px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+            className="w-full text-xs px-3 py-2 rounded-xl bg-[#F7F5F0] border border-[#E8E3D9] text-[#1C1917] focus:outline-none focus:ring-2 focus:ring-[#15803D]/20 focus:border-[#15803D]"
           />
         </div>
 
@@ -92,7 +92,7 @@ export default function QuickExpenseBar({
           <select
             value={selectedCategoryId}
             onChange={(e) => setSelectedCategoryId(e.target.value)}
-            className="w-full text-xs px-2.5 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none text-slate-700 font-medium"
+            className="w-full text-xs px-2.5 py-2 rounded-xl bg-[#F7F5F0] border border-[#E8E3D9] text-[#44403C] focus:outline-none focus:border-[#15803D] font-medium"
           >
             <option value="">-- Danh mục --</option>
             {expenseCategories.map((c) => (
@@ -103,12 +103,12 @@ export default function QuickExpenseBar({
           </select>
         </div>
 
-        {/* Nút gửi & nút mở form đầy đủ */}
+        {/* Nút Lưu (Xanh Lá Cây) & Chi tiết (Be) */}
         <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <button
             type="submit"
             disabled={loading || !amount}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-bold rounded-xl transition-colors shadow-xs shadow-emerald-600/20"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 bg-[#15803D] hover:bg-[#166534] disabled:opacity-40 text-white text-xs font-bold rounded-xl transition-all shadow-xs shadow-emerald-800/15"
           >
             <Send className="w-3.5 h-3.5" />
             <span>Lưu</span>
@@ -117,8 +117,8 @@ export default function QuickExpenseBar({
           <button
             type="button"
             onClick={onOpenFullModal}
-            className="px-2.5 py-2 text-xs font-medium text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors whitespace-nowrap"
-            title="Mở form chi tiết (Thu/Chi/Chuyển khoản)"
+            className="px-2.5 py-2 text-xs font-semibold text-[#78716C] hover:text-[#1C1917] hover:bg-[#F4F1EA] rounded-xl transition-colors whitespace-nowrap"
+            title="Mở form chi tiết"
           >
             Chi tiết...
           </button>
@@ -127,4 +127,3 @@ export default function QuickExpenseBar({
     </div>
   );
 }
-

@@ -18,33 +18,33 @@ export default function BudgetHealthList({
   if (!budgets || budgets.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-2xs space-y-4">
+    <div className="bg-white rounded-3xl p-5 border border-[#E8E3D9] shadow-2xs space-y-4">
       <div className="flex items-center justify-between pb-1">
         <div className="flex items-center gap-2">
-          <span className="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+          <span className="w-6 h-6 rounded-lg bg-[#DCFCE7] text-[#15803D] flex items-center justify-center">
             <Target className="w-3.5 h-3.5" />
           </span>
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#1C1917]">
             Hạn mức tháng {month}/{year}
           </h3>
         </div>
 
         <Link
           href="/budgets"
-          className="text-[11px] font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+          className="text-[11px] font-bold text-[#15803D] hover:underline"
         >
           Quản lý ➔
         </Link>
       </div>
 
-      <div className="space-y-3 pt-1 border-t border-slate-100">
+      <div className="space-y-3 pt-1 border-t border-[#F4F1EA]">
         {budgets.map((b) => {
           const isExceeded = b.status === "EXCEEDED";
           const isDanger = b.status === "DANGER" || b.status === "WARNING";
           const cappedPct = Math.min(b.percentage, 100);
 
-          let barColor = "bg-emerald-500";
-          let badgeColor = "text-emerald-700 bg-emerald-50";
+          let barColor = "bg-[#15803D]";
+          let badgeColor = "text-[#15803D] bg-[#DCFCE7]";
 
           if (isExceeded) {
             barColor = "bg-rose-500";

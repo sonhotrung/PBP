@@ -38,19 +38,19 @@ export default function FloatingNavbar() {
 
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none">
-      <nav className="pointer-events-auto flex items-center gap-1.5 sm:gap-2.5 p-1.5 bg-white/95 backdrop-blur-xl border border-[#E8E3D9] rounded-full shadow-lg shadow-stone-900/5 neon-island-border transition-all">
-        {/* Brand Logo với chữ NEON Xanh Lá Cây */}
+      <nav className="pointer-events-auto flex items-center gap-1.5 sm:gap-2.5 p-1.5 bg-white/95 backdrop-blur-xl border border-[#E8E3D9] rounded-full shadow-lg shadow-stone-900/5 island-shadow transition-all">
+        {/* Brand Logo màu Xanh Lá Cây thanh lịch, ổn định */}
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 pl-2 pr-3.5 py-1 rounded-full bg-[#0A2616] hover:bg-[#071D11] transition-all group shrink-0 border border-emerald-500/40 shadow-xs"
+          className="flex items-center gap-2 pl-2 pr-3.5 py-1 rounded-full hover:bg-[#F4F1EA] transition-all group shrink-0"
         >
-          <div className="w-6 h-6 rounded-full bg-emerald-900/60 flex items-center justify-center text-[#4ADE80] border border-emerald-400/40">
+          <div className="w-6 h-6 rounded-full bg-[#15803D] flex items-center justify-center text-white shadow-2xs">
             <WalletCards className="w-3.5 h-3.5" />
           </div>
-          <span className="text-xs font-black tracking-wider neon-logo-text uppercase">
-            PBP Journal
+          <span className="text-xs font-black tracking-tight text-[#15803D] flex items-center gap-1">
+            <span>PBP</span>
+            <span className="text-[#1C1917] font-bold">Journal</span>
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#4ADE80] animate-pulse shadow-[0_0_8px_#4ADE80]" />
         </Link>
 
         {/* Dấu phân cách dọc viền be */}

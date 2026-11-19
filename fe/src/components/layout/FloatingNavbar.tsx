@@ -86,17 +86,6 @@ export default function FloatingNavbar() {
             );
           })}
         </div>
-
-        {/* Dấu phân cách dọc viền be */}
-        <div className="h-4 w-px bg-[#E8E3D9] shrink-0 hidden sm:block" />
-
-        {/* Mini Be Tag */}
-        <div className="hidden sm:flex items-center gap-1.5 pr-2.5 pl-1 py-1">
-          <span className="flex items-center gap-1 text-[11px] font-bold text-[#15803D] bg-[#F4F1EA] border border-[#E8E3D9] px-2.5 py-0.5 rounded-full">
-            <Sparkles className="w-3 h-3 text-[#15803D]" />
-            <span>2026</span>
-          </span>
-        </div>
       </nav>
     </header>
   );

@@ -191,7 +191,7 @@ export default function DailyTimeline({
                           </span>
                         )}
                         <span>•</span>
-                        <span className="px-1.5 py-0.5 rounded-md bg-[#F4F1EA] text-[10px] font-bold text-[#57534E]">
+                        <span className="font-medium text-[#78716C]">
                           {tx.wallet?.name || "Ví chính"}
                         </span>
                         {isTransfer && tx.toWallet && (

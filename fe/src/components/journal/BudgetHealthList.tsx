@@ -68,7 +68,7 @@ export default function BudgetHealthList({
                   <span className="text-[11px] text-slate-400">
                     {formatCurrency(b.spentAmount)} / {formatCurrency(b.budgetAmount)}
                   </span>
-                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${badgeColor}`}>
+                  <span className={`text-[11px] font-black ${isExceeded ? "text-rose-600" : isDanger ? "text-amber-600" : "text-[#15803D]"}`}>
                     {b.percentage.toFixed(0)}%
                   </span>
                 </div>

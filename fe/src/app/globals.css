@@ -15,7 +15,6 @@ body {
   color: var(--text-dark);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
 * {
@@ -43,35 +42,4 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #B8B0A2;
-}
-
-/* HIỆU ỨNG LÁ RƠI NHẸ NHÀNG (GENTLE FALLING LEAVES) */
-@keyframes fallAndSway {
-  0% {
-    top: -8%;
-    transform: translateX(0px) rotate(0deg) scale(0.9);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.25;
-  }
-  50% {
-    transform: translateX(45px) rotate(140deg) scale(1);
-    opacity: 0.28;
-  }
-  85% {
-    opacity: 0.22;
-  }
-  100% {
-    top: 108%;
-    transform: translateX(-35px) rotate(280deg) scale(0.85);
-    opacity: 0;
-  }
-}
-
-.falling-leaf {
-  position: absolute;
-  pointer-events: none;
-  animation: fallAndSway linear infinite;
-  will-change: transform, top, opacity;
 }

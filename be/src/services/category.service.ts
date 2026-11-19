@@ -1,4 +1,4 @@
-import { CategoryType } from "@prisma/client";
+import { CategoryType } from "../types";
 import { prisma } from "../config/database";
 
 export class CategoryService {

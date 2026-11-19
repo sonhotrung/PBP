@@ -67,7 +67,6 @@ async function main() {
 
   // 5. Create all 36 transactions
   await prisma.transaction.createMany({
-    skipDuplicates: true,
     data: [
       // October 2026
       { id: "tx-10-01", amount: 25000000, type: "INCOME", description: "Nhận lương tháng 10 công ty", date: new Date("2026-10-05"), walletId: "wallet-bank-01", categoryId: "cat-salary" },

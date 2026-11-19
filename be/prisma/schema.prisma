@@ -3,20 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-}
-
-enum TransactionType {
-  INCOME
-  EXPENSE
-  TRANSFER
-}
-
-enum CategoryType {
-  INCOME
-  EXPENSE
-  TRANSFER
 }
 
 model Wallet {
@@ -36,13 +24,13 @@ model Wallet {
 }
 
 model Category {
-  id        String       @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  type      CategoryType
-  icon      String       @default("Tag")
-  color     String       @default("#6B7280")
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  type      String   // INCOME | EXPENSE | TRANSFER
+  icon      String   @default("Tag")
+  color     String   @default("#6B7280")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   transactions Transaction[]
   budgets      Budget[]
@@ -51,22 +39,22 @@ model Category {
 }
 
 model Transaction {
-  id          String          @id @default(uuid())
+  id          String   @id @default(uuid())
   amount      Float
-  type        TransactionType
+  type        String   // INCOME | EXPENSE | TRANSFER
   description String?
-  date        DateTime        @default(now())
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   walletId    String
-  wallet      Wallet          @relation("SourceWallet", fields: [walletId], references: [id], onDelete: Cascade)
+  wallet      Wallet   @relation("SourceWallet", fields: [walletId], references: [id], onDelete: Cascade)
 
   toWalletId  String?
-  toWallet    Wallet?         @relation("DestinationWallet", fields: [toWalletId], references: [id], onDelete: SetNull)
+  toWallet    Wallet?  @relation("DestinationWallet", fields: [toWalletId], references: [id], onDelete: SetNull)
 
   categoryId  String?
-  category    Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@index([date])
   @@index([walletId])

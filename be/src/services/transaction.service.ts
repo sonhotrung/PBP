@@ -1,6 +1,5 @@
-import { TransactionType } from "@prisma/client";
 import { prisma } from "../config/database";
-import { CreateTransactionData, TransactionFilters, MonthlyStats, CategorySpending } from "../types";
+import { TransactionType, CreateTransactionData, TransactionFilters, MonthlyStats, CategorySpending } from "../types";
 
 const transactionInclude = {
   wallet: { select: { id: true, name: true, color: true } },

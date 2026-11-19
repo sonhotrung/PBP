@@ -32,8 +32,8 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// GET /api/transactions/stats
-router.get("/stats", async (req: Request, res: Response, next: NextFunction) => {
+// GET /api/transactions/stats and /api/transactions/stats/monthly
+const handleMonthlyStats = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const month = parseInt(req.query.month as string) || new Date().getMonth() + 1;
     const year = parseInt(req.query.year as string) || new Date().getFullYear();
@@ -42,10 +42,12 @@ router.get("/stats", async (req: Request, res: Response, next: NextFunction) => 
   } catch (err) {
     next(err);
   }
-});
+};
+router.get("/stats", handleMonthlyStats);
+router.get("/stats/monthly", handleMonthlyStats);
 
-// GET /api/transactions/by-category
-router.get("/by-category", async (req: Request, res: Response, next: NextFunction) => {
+// GET /api/transactions/by-category and /api/transactions/stats/by-category
+const handleByCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const month = parseInt(req.query.month as string) || new Date().getMonth() + 1;
     const year = parseInt(req.query.year as string) || new Date().getFullYear();
@@ -54,7 +56,9 @@ router.get("/by-category", async (req: Request, res: Response, next: NextFunctio
   } catch (err) {
     next(err);
   }
-});
+};
+router.get("/by-category", handleByCategory);
+router.get("/stats/by-category", handleByCategory);
 
 // GET /api/transactions/:id
 router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {

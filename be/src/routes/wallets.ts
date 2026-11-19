@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { z } from "zod";
 import { WalletService } from "../services/wallet.service";
 
 const router = Router();
@@ -10,6 +9,16 @@ router.get("/", async (_req: Request, res: Response, next: NextFunction) => {
     const wallets = await WalletService.getAllWallets();
     const totalBalance = await WalletService.getTotalBalance();
     res.json({ success: true, data: wallets, totalBalance });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /api/wallets/total/balance
+router.get("/total/balance", async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const total = await WalletService.getTotalBalance();
+    res.json({ success: true, data: { total } });
   } catch (err) {
     next(err);
   }

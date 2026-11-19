@@ -16,6 +16,7 @@ import QuickExpenseBar from "@/components/journal/QuickExpenseBar";
 import DailyTimeline from "@/components/journal/DailyTimeline";
 import WalletPockets from "@/components/journal/WalletPockets";
 import BudgetHealthList from "@/components/journal/BudgetHealthList";
+import PhilosophyHero from "@/components/journal/PhilosophyHero";
 import ExpenseByCategoryChart from "@/components/dashboard/ExpenseByCategoryChart";
 import MonthlyStatsCards from "@/components/dashboard/MonthlyStatsCards";
 import TransferModal from "@/components/journal/TransferModal";
@@ -171,6 +172,9 @@ export default function DashboardPage() {
           </button>
         </div>
       </div>
+
+      {/* HERO CHẠY 10 TRIẾT LÝ SỬ DỤNG TIỀN */}
+      <PhilosophyHero />
 
       {loading ? (
         <div className="py-28">

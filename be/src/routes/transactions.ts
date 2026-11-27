@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from "express";
 import { z } from "zod";
 import { TransactionService } from "../services/transaction.service";
 import { TransactionFilters } from "../types";
-import { optionalAuth, AuthenticatedRequest } from "../middleware/auth";
+import { requireAuth, AuthenticatedRequest } from "../middleware/auth";
 
 const router = Router();
 
@@ -16,8 +16,8 @@ const CreateTransactionSchema = z.object({
   categoryId: z.string().optional(),
 });
 
-// GET /api/transactions
-router.get("/", optionalAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+// GET /api/transactions (Yêu cầu đăng nhập)
+router.get("/", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const filters: TransactionFilters = {
       month: req.query.month ? parseInt(req.query.month as string) : undefined,
@@ -44,8 +44,8 @@ const handleMonthlyStats = async (req: AuthenticatedRequest, res: Response, next
     next(err);
   }
 };
-router.get("/stats", optionalAuth, handleMonthlyStats);
-router.get("/stats/monthly", optionalAuth, handleMonthlyStats);
+router.get("/stats", requireAuth, handleMonthlyStats);
+router.get("/stats/monthly", requireAuth, handleMonthlyStats);
 
 // GET /api/transactions/by-category and /api/transactions/stats/by-category
 const handleByCategory = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -58,11 +58,11 @@ const handleByCategory = async (req: AuthenticatedRequest, res: Response, next: 
     next(err);
   }
 };
-router.get("/by-category", optionalAuth, handleByCategory);
-router.get("/stats/by-category", optionalAuth, handleByCategory);
+router.get("/by-category", requireAuth, handleByCategory);
+router.get("/stats/by-category", requireAuth, handleByCategory);
 
 // GET /api/transactions/:id
-router.get("/:id", optionalAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.get("/:id", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const transaction = await TransactionService.getById(req.params.id as string, req.userId);
     if (!transaction) {
@@ -76,7 +76,7 @@ router.get("/:id", optionalAuth, async (req: AuthenticatedRequest, res: Response
 });
 
 // POST /api/transactions
-router.post("/", optionalAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.post("/", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const data = CreateTransactionSchema.parse(req.body);
     let transaction;
@@ -92,7 +92,7 @@ router.post("/", optionalAuth, async (req: AuthenticatedRequest, res: Response, 
 });
 
 // DELETE /api/transactions/:id
-router.delete("/:id", async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.delete("/:id", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     await TransactionService.delete(req.params.id as string);
     res.json({ success: true, message: "Transaction deleted" });

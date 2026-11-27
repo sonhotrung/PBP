@@ -41,6 +41,11 @@ export default function FloatingNavbar() {
   const { user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
 
+  // Ẩn thanh điều hướng khi chưa đăng nhập hoặc đang ở trang đăng nhập
+  if (!user || pathname === "/login") {
+    return null;
+  }
+
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-fit px-4 pointer-events-none">
       <nav className="pointer-events-auto flex items-center gap-1.5 sm:gap-2 p-1.5 bg-white/95 backdrop-blur-xl border border-[#E8E3D9] rounded-full shadow-lg shadow-stone-900/5 island-shadow transition-all">

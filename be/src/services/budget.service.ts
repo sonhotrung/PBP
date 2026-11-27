@@ -1,30 +1,52 @@
 import { prisma } from "../config/database";
 import { UpsertBudgetData, BudgetStatus, SpendingForecast } from "../types";
 
+async function getEffectiveUserId(userId?: string): Promise<string | null> {
+  if (userId) return userId;
+  const demoUser = await prisma.user.findUnique({ where: { email: "demo@pbp.vn" } });
+  return demoUser?.id ?? null;
+}
+
 export class BudgetService {
-  static async getAll(month: number, year: number) {
+  static async getAll(month: number, year: number, userId?: string) {
+    const effectiveUserId = await getEffectiveUserId(userId);
+    const where: Record<string, unknown> = { month, year };
+    if (effectiveUserId) where.userId = effectiveUserId;
+
     return prisma.budget.findMany({
-      where: { month, year },
+      where,
       include: { category: true },
       orderBy: { createdAt: "asc" },
     });
   }
 
-  static async upsert(data: UpsertBudgetData) {
-    return prisma.budget.upsert({
+  static async upsert(data: UpsertBudgetData, userId?: string) {
+    const effectiveUserId = await getEffectiveUserId(userId);
+
+    const existing = await prisma.budget.findFirst({
       where: {
-        categoryId_month_year: {
-          categoryId: data.categoryId,
-          month: data.month,
-          year: data.year,
-        },
+        categoryId: data.categoryId,
+        month: data.month,
+        year: data.year,
+        ...(effectiveUserId ? { userId: effectiveUserId } : {}),
       },
-      update: { amount: data.amount },
-      create: {
+    });
+
+    if (existing) {
+      return prisma.budget.update({
+        where: { id: existing.id },
+        data: { amount: data.amount },
+        include: { category: true },
+      });
+    }
+
+    return prisma.budget.create({
+      data: {
         categoryId: data.categoryId,
         amount: data.amount,
         month: data.month,
         year: data.year,
+        userId: effectiveUserId,
       },
       include: { category: true },
     });
@@ -34,9 +56,13 @@ export class BudgetService {
     return prisma.budget.delete({ where: { id } });
   }
 
-  static async getBudgetStatus(month: number, year: number): Promise<BudgetStatus[]> {
+  static async getBudgetStatus(month: number, year: number, userId?: string): Promise<BudgetStatus[]> {
+    const effectiveUserId = await getEffectiveUserId(userId);
+    const whereBudget: Record<string, unknown> = { month, year };
+    if (effectiveUserId) whereBudget.userId = effectiveUserId;
+
     const budgets = await prisma.budget.findMany({
-      where: { month, year },
+      where: whereBudget,
       include: { category: true },
     });
 
@@ -46,12 +72,15 @@ export class BudgetService {
     const statuses: BudgetStatus[] = [];
 
     for (const budget of budgets) {
+      const whereTx: Record<string, unknown> = {
+        type: "EXPENSE",
+        categoryId: budget.categoryId,
+        date: { gte: start, lt: end },
+      };
+      if (effectiveUserId) whereTx.userId = effectiveUserId;
+
       const transactions = await prisma.transaction.findMany({
-        where: {
-          type: "EXPENSE",
-          categoryId: budget.categoryId,
-          date: { gte: start, lt: end },
-        },
+        where: whereTx,
         select: { amount: true },
       });
 
@@ -78,19 +107,25 @@ export class BudgetService {
     return statuses;
   }
 
-  static async getSpendingForecast(month: number, year: number): Promise<SpendingForecast> {
+  static async getSpendingForecast(month: number, year: number, userId?: string): Promise<SpendingForecast> {
+    const effectiveUserId = await getEffectiveUserId(userId);
     const now = new Date();
     const start = new Date(year, month - 1, 1);
     const end = new Date(year, month, 1);
     const daysInMonth = new Date(year, month, 0).getDate();
 
-    // Days passed: at least 1
     const isCurrentMonth = now.getFullYear() === year && now.getMonth() + 1 === month;
     const daysPassed = isCurrentMonth ? Math.max(1, now.getDate()) : daysInMonth;
     const daysRemaining = Math.max(0, daysInMonth - daysPassed);
 
+    const where: Record<string, unknown> = {
+      type: "EXPENSE",
+      date: { gte: start, lt: end },
+    };
+    if (effectiveUserId) where.userId = effectiveUserId;
+
     const transactions = await prisma.transaction.findMany({
-      where: { type: "EXPENSE", date: { gte: start, lt: end } },
+      where,
       select: { amount: true },
     });
 

@@ -10,23 +10,58 @@ import {
   CreateTransactionDTO,
   TransferDTO,
   CreateBudgetDTO,
+  User,
+  LoginDTO,
+  RegisterDTO,
+  AuthResponse,
 } from "@/types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
+function getAuthHeader(): Record<string, string> {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("pbp_auth_token");
+    if (token) return { Authorization: `Bearer ${token}` };
+  }
+  return {};
+}
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const headers = {
+    "Content-Type": "application/json",
+    ...getAuthHeader(),
+    ...options?.headers,
+  };
+
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
     ...options,
+    headers,
   });
   if (!res.ok) {
     const error = await res.json().catch(() => ({ message: res.statusText }));
-    throw new Error(error.message || "API Error");
+    throw new Error(error.error || error.message || "API Error");
   }
-  return res.json();
+  const json = await res.json();
+  if (json && typeof json === "object" && "data" in json) {
+    return json.data as T;
+  }
+  return json as T;
 }
 
 export const api = {
+  // Auth
+  login: (data: LoginDTO) =>
+    request<AuthResponse>("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  register: (data: RegisterDTO) =>
+    request<AuthResponse>("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  getMe: () => request<User>("/api/auth/me"),
+
   // Wallets
   getWallets: () => request<Wallet[]>("/api/wallets"),
   getTotalBalance: () => request<{ total: number }>("/api/wallets/total/balance"),

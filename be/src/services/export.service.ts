@@ -1,8 +1,9 @@
 import { prisma } from "../config/database";
 
 export class ExportService {
-  static async generateCSV(month?: number, year?: number): Promise<string> {
+  static async generateCSV(month?: number, year?: number, userId?: string): Promise<string> {
     const where: Record<string, unknown> = {};
+    if (userId) where.userId = userId;
 
     if (month && year) {
       const start = new Date(year, month - 1, 1);

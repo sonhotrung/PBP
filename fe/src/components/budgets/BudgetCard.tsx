@@ -36,9 +36,8 @@ export default function BudgetCard({ budget }: BudgetCardProps) {
   return (
     <Card className={`p-5 border transition-all ${isExceeded ? "border-rose-200 shadow-sm" : "border-slate-200"}`}>
       <div className="flex items-center justify-between mb-3">
-        <h4 className="font-semibold text-slate-800 text-sm">{budget.categoryName}</h4>
-        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border flex items-center gap-1 ${statusBg}`}>
-          <StatusIcon className="w-3 h-3" />
+        <h4 className="font-bold text-[#1C1917] text-sm">{budget.categoryName}</h4>
+        <span className={`text-xs font-black ${isExceeded ? "text-rose-600" : isDanger ? "text-amber-600" : "text-[#15803D]"}`}>
           {budget.percentage.toFixed(0)}%
         </span>
       </div>

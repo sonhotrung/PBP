@@ -1,6 +1,7 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Response, NextFunction } from "express";
 import { z } from "zod";
 import { BudgetService } from "../services/budget.service";
+import { requireAuth, AuthenticatedRequest } from "../middleware/auth";
 
 const router = Router();
 
@@ -11,12 +12,12 @@ const UpsertBudgetSchema = z.object({
   year: z.number().int().min(2000),
 });
 
-// GET /api/budgets?month=&year=
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+// GET /api/budgets?month=&year= (Yêu cầu đăng nhập)
+router.get("/", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const month = parseInt(req.query.month as string) || new Date().getMonth() + 1;
     const year = parseInt(req.query.year as string) || new Date().getFullYear();
-    const budgets = await BudgetService.getAll(month, year);
+    const budgets = await BudgetService.getAll(month, year, req.userId);
     res.json({ success: true, data: budgets });
   } catch (err) {
     next(err);
@@ -24,11 +25,11 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // GET /api/budgets/status?month=&year=
-router.get("/status", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/status", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const month = parseInt(req.query.month as string) || new Date().getMonth() + 1;
     const year = parseInt(req.query.year as string) || new Date().getFullYear();
-    const data = await BudgetService.getBudgetStatus(month, year);
+    const data = await BudgetService.getBudgetStatus(month, year, req.userId);
     res.json({ success: true, data });
   } catch (err) {
     next(err);
@@ -36,11 +37,11 @@ router.get("/status", async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // GET /api/budgets/forecast?month=&year=
-router.get("/forecast", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/forecast", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const month = parseInt(req.query.month as string) || new Date().getMonth() + 1;
     const year = parseInt(req.query.year as string) || new Date().getFullYear();
-    const data = await BudgetService.getSpendingForecast(month, year);
+    const data = await BudgetService.getSpendingForecast(month, year, req.userId);
     res.json({ success: true, data });
   } catch (err) {
     next(err);
@@ -48,10 +49,10 @@ router.get("/forecast", async (req: Request, res: Response, next: NextFunction) 
 });
 
 // POST /api/budgets (upsert)
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const data = UpsertBudgetSchema.parse(req.body);
-    const budget = await BudgetService.upsert(data);
+    const budget = await BudgetService.upsert(data, req.userId);
     res.status(201).json({ success: true, data: budget });
   } catch (err) {
     next(err);
@@ -59,7 +60,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // DELETE /api/budgets/:id
-router.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/:id", requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     await BudgetService.delete(req.params.id as string);
     res.json({ success: true, message: "Budget deleted" });

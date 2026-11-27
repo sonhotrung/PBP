@@ -1,6 +1,5 @@
-import { TransactionType } from "@prisma/client";
 import { prisma } from "../config/database";
-import { CreateTransactionData, TransactionFilters, MonthlyStats, CategorySpending } from "../types";
+import { TransactionType, CreateTransactionData, TransactionFilters, MonthlyStats, CategorySpending } from "../types";
 
 const transactionInclude = {
   wallet: { select: { id: true, name: true, color: true } },
@@ -8,9 +7,20 @@ const transactionInclude = {
   category: { select: { id: true, name: true, icon: true, color: true, type: true } },
 };
 
+async function getEffectiveUserId(userId?: string): Promise<string | null> {
+  if (userId) return userId;
+  const demoUser = await prisma.user.findUnique({ where: { email: "demo@pbp.vn" } });
+  return demoUser?.id ?? null;
+}
+
 export class TransactionService {
-  static async getAll(filters: TransactionFilters = {}) {
+  static async getAll(filters: TransactionFilters = {}, userId?: string) {
+    const effectiveUserId = await getEffectiveUserId(userId);
     const where: Record<string, unknown> = {};
+
+    if (effectiveUserId) {
+      where.userId = effectiveUserId;
+    }
 
     if (filters.type) where.type = filters.type;
     if (filters.walletId) where.walletId = filters.walletId;
@@ -33,14 +43,18 @@ export class TransactionService {
     });
   }
 
-  static async getById(id: string) {
-    return prisma.transaction.findUnique({
+  static async getById(id: string, userId?: string) {
+    const transaction = await prisma.transaction.findUnique({
       where: { id },
       include: transactionInclude,
     });
+    if (!transaction) return null;
+    if (userId && transaction.userId && transaction.userId !== userId) return null;
+    return transaction;
   }
 
-  static async create(data: CreateTransactionData) {
+  static async create(data: CreateTransactionData, userId?: string) {
+    const effectiveUserId = await getEffectiveUserId(userId);
     const wallet = await prisma.wallet.findUnique({ where: { id: data.walletId } });
     if (!wallet) throw new Error(`Wallet not found: ${data.walletId}`);
 
@@ -53,6 +67,7 @@ export class TransactionService {
         walletId: data.walletId,
         toWalletId: data.toWalletId ?? null,
         categoryId: data.categoryId ?? null,
+        userId: effectiveUserId,
       },
       include: transactionInclude,
     });
@@ -67,8 +82,9 @@ export class TransactionService {
     return transaction;
   }
 
-  static async transfer(data: CreateTransactionData) {
+  static async transfer(data: CreateTransactionData, userId?: string) {
     if (!data.toWalletId) throw new Error("toWalletId is required for transfers");
+    const effectiveUserId = await getEffectiveUserId(userId);
 
     const [transaction] = await prisma.$transaction([
       prisma.transaction.create({
@@ -80,6 +96,7 @@ export class TransactionService {
           walletId: data.walletId,
           toWalletId: data.toWalletId,
           categoryId: data.categoryId ?? null,
+          userId: effectiveUserId,
         },
       }),
       prisma.wallet.update({ where: { id: data.walletId }, data: { balance: { decrement: data.amount } } }),
@@ -106,12 +123,18 @@ export class TransactionService {
     return prisma.transaction.delete({ where: { id } });
   }
 
-  static async getMonthlyStats(month: number, year: number): Promise<MonthlyStats> {
+  static async getMonthlyStats(month: number, year: number, userId?: string): Promise<MonthlyStats> {
+    const effectiveUserId = await getEffectiveUserId(userId);
     const start = new Date(year, month - 1, 1);
     const end = new Date(year, month, 1);
 
+    const where: Record<string, unknown> = {
+      date: { gte: start, lt: end },
+    };
+    if (effectiveUserId) where.userId = effectiveUserId;
+
     const transactions = await prisma.transaction.findMany({
-      where: { date: { gte: start, lt: end } },
+      where,
       select: { amount: true, type: true },
     });
 
@@ -126,12 +149,20 @@ export class TransactionService {
     };
   }
 
-  static async getByCategory(month: number, year: number): Promise<CategorySpending[]> {
+  static async getByCategory(month: number, year: number, userId?: string): Promise<CategorySpending[]> {
+    const effectiveUserId = await getEffectiveUserId(userId);
     const start = new Date(year, month - 1, 1);
     const end = new Date(year, month, 1);
 
+    const where: Record<string, unknown> = {
+      type: "EXPENSE",
+      date: { gte: start, lt: end },
+      categoryId: { not: null },
+    };
+    if (effectiveUserId) where.userId = effectiveUserId;
+
     const transactions = await prisma.transaction.findMany({
-      where: { type: "EXPENSE", date: { gte: start, lt: end }, categoryId: { not: null } },
+      where,
       include: { category: { select: { id: true, name: true, color: true, icon: true } } },
     });
 

@@ -3,24 +3,28 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-enum TransactionType {
-  INCOME
-  EXPENSE
-  TRANSFER
-}
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  name      String
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-enum CategoryType {
-  INCOME
-  EXPENSE
-  TRANSFER
+  wallets      Wallet[]
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@map("users")
 }
 
 model Wallet {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   type      String   @default("BANK")
   balance   Float    @default(0)
@@ -29,6 +33,9 @@ model Wallet {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  userId    String?  @db.ObjectId
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   outgoingTransactions Transaction[] @relation("SourceWallet")
   incomingTransactions Transaction[] @relation("DestinationWallet")
 
@@ -36,13 +43,13 @@ model Wallet {
 }
 
 model Category {
-  id        String       @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  type      CategoryType
-  icon      String       @default("Tag")
-  color     String       @default("#6B7280")
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  type      String   // INCOME | EXPENSE | TRANSFER
+  icon      String   @default("Tag")
+  color     String   @default("#6B7280")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   transactions Transaction[]
   budgets      Budget[]
@@ -51,22 +58,25 @@ model Category {
 }
 
 model Transaction {
-  id          String          @id @default(uuid())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   amount      Float
-  type        TransactionType
+  type        String    // INCOME | EXPENSE | TRANSFER
   description String?
-  date        DateTime        @default(now())
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  date        DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  walletId    String
-  wallet      Wallet          @relation("SourceWallet", fields: [walletId], references: [id], onDelete: Cascade)
+  userId      String?   @db.ObjectId
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  toWalletId  String?
-  toWallet    Wallet?         @relation("DestinationWallet", fields: [toWalletId], references: [id], onDelete: SetNull)
+  walletId    String    @db.ObjectId
+  wallet      Wallet    @relation("SourceWallet", fields: [walletId], references: [id], onDelete: Cascade)
 
-  categoryId  String?
-  category    Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  toWalletId  String?   @db.ObjectId
+  toWallet    Wallet?   @relation("DestinationWallet", fields: [toWalletId], references: [id], onDelete: SetNull)
+
+  categoryId  String?   @db.ObjectId
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@index([date])
   @@index([walletId])
@@ -75,16 +85,19 @@ model Transaction {
 }
 
 model Budget {
-  id         String   @id @default(uuid())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   amount     Float
   month      Int
   year       Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  categoryId String
+  userId     String?  @db.ObjectId
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String   @db.ObjectId
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@unique([categoryId, month, year])
+  @@unique([categoryId, month, year, userId])
   @@map("budgets")
 }

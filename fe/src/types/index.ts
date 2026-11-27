@@ -112,3 +112,27 @@ export interface CreateBudgetDTO {
   month: number;
   year: number;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string | null;
+  createdAt?: string;
+}
+
+export interface LoginDTO {
+  email: string;
+  password: string;
+}
+
+export interface RegisterDTO {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}

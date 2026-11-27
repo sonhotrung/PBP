@@ -112,3 +112,33 @@ export interface UpsertBudgetData {
   month: number;
   year: number;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface RegisterDTO {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface LoginDTO {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    avatar?: string | null;
+  };
+  token: string;
+}

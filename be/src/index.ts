@@ -10,15 +10,17 @@ import categoryRoutes from "./routes/categories";
 import transactionRoutes from "./routes/transactions";
 import budgetRoutes from "./routes/budgets";
 import exportRoutes from "./routes/export";
+import authRoutes from "./routes/auth";
 
 const app = express();
-const PORT = parseInt(process.env.PORT || "4000", 10);
+const PORT = parseInt(process.env.PORT || "5000", 10);
 
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/wallets", walletRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);

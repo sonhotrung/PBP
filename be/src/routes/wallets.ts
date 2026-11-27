@@ -1,13 +1,14 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Response, NextFunction } from "express";
 import { WalletService } from "../services/wallet.service";
+import { optionalAuth, AuthenticatedRequest } from "../middleware/auth";
 
 const router = Router();
 
 // GET /api/wallets
-router.get("/", async (_req: Request, res: Response, next: NextFunction) => {
+router.get("/", optionalAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const wallets = await WalletService.getAllWallets();
-    const totalBalance = await WalletService.getTotalBalance();
+    const wallets = await WalletService.getAllWallets(req.userId);
+    const totalBalance = await WalletService.getTotalBalance(req.userId);
     res.json({ success: true, data: wallets, totalBalance });
   } catch (err) {
     next(err);
@@ -15,9 +16,9 @@ router.get("/", async (_req: Request, res: Response, next: NextFunction) => {
 });
 
 // GET /api/wallets/total/balance
-router.get("/total/balance", async (_req: Request, res: Response, next: NextFunction) => {
+router.get("/total/balance", optionalAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const total = await WalletService.getTotalBalance();
+    const total = await WalletService.getTotalBalance(req.userId);
     res.json({ success: true, data: { total } });
   } catch (err) {
     next(err);
@@ -25,9 +26,9 @@ router.get("/total/balance", async (_req: Request, res: Response, next: NextFunc
 });
 
 // GET /api/wallets/:id
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/:id", optionalAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const wallet = await WalletService.getWalletById(req.params.id as string);
+    const wallet = await WalletService.getWalletById(req.params.id as string, req.userId);
     if (!wallet) {
       res.status(404).json({ success: false, error: "Wallet not found" });
       return;

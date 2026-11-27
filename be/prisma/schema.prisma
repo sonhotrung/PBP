@@ -98,6 +98,6 @@ model Budget {
   categoryId String   @db.ObjectId
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@unique([categoryId, month, year])
+  @@unique([categoryId, month, year, userId])
   @@map("budgets")
 }
